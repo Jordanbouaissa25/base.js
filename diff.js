@@ -7,3 +7,4 @@ console.log(soldeCompteApresSalaire) // J'affiche le solde après salaire
 
 
 
+
