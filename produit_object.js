@@ -1,8 +1,8 @@
 let produit = {
-    nom: "Iphone",
-    prix: 1000,
-    stock: 250,
-    nb_vendu: 750
+    nom: "Iphone",                                                                                                 // Nom du produit
+    prix: 1000,                                                                                                    // Prix du produit
+    stock: 250,                                                                                                    // Quantité du produit
+    nb_vendu: 750                                                                                                  // nombre de vente du produit
 }
 console.log(produit)                                                                                                // affichage des données 
 produit.gain = produit.prix*produit.nb_vendu                                                                        // Création du gain
