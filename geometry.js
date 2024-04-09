@@ -25,3 +25,4 @@ console.log("y:", rectangle.y+rectangle.unite)                                  
 console.log("largeur", rectangle.perimetre+rectangle.unite)                                // Affichage de la largeur
 console.log("aire", rectangle.area+rectangle.unite, "2")                                   // Affichage de l'air 
 console.log("diagonale", rectangle.diagonale+rectangle.unite+"\n")                         // Affichage de la diagonale
+
