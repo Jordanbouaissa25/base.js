@@ -14,3 +14,4 @@ variableComplexe2.push("course")
 console.log("variableComplexe1", variableComplexe1)
 console.log("variableComplexe2", variableComplexe2)
 console.log("variableComplexe3", variableComplexe3)
+
