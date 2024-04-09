@@ -20,3 +20,4 @@ console.log("benefice par produit : ", benefice_par_produit)                    
 let pourcentage_benefice = 100*(benefice_par_produit/produit.prix)                                                   // Création du pourcentage de benefice
 console.log("pourcentage benefice par produit :", pourcentage_benefice+"96 ~", Math.round(pourcentage_benefice)+"%") // Affichage du pourcentage ainsi que l'arrondi du pourçentage
 
+
