@@ -6,8 +6,8 @@ let produit = {
 }
 console.log(produit)                                                                                                // affichage des données 
 produit.gain = produit.prix*produit.nb_vendu                                                                        // Création du gain
-console.log(produit)                                                                                                // Affichage des caractéristiques du produit
-
+console.log(produit)     
+                                                                                           // Affichage des caractéristiques du produit
 produit.valeur_stock = produit.prix*produit.stock                                                                   // Création de la valeur du stock
 
 console.log("produit :", produit.nom," / gain :", produit.gain, "/ valeur stock:", produit.valeur_stock)            // Affichage des données 
