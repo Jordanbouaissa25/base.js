@@ -1,0 +1,10 @@
+Nom : frite poulet tandoori / Durée : 23 / Ingredients : patate, huile, poulet, huile, epice tandoori / Ustensiles : friteuse, poele, concaseur
+Nom : puree poulet sauce forestier / Durée : 20 / Ingredients : pure, lait, eau, poulet, huile, creme , champignon, beurre, eau / Ustensiles : casserole, poele, saladier, mixeur
+Nom : riz poulet sauce forestier / Durée : 20 / Ingredients : riz, eau, poulet, huile, creme , champignon, beurre, eau / Ustensiles : casserole, poele, saladier, mixeur
+Nom : salade steak hache tandoori / Durée : 14 / Ingredients : salade, steak hache, huile, epice tandoori / Ustensiles : saladier, poele, concaseur
+Nom : puree saumon tandoori / Durée : 20 / Ingredients : pure, lait, eau, saumon, huile, epice tandoori / Ustensiles : casserole, poele, concaseur
+Nom : salade steak hache tandoori / Durée : 14 / Ingredients : salade, steak hache, huile, epice tandoori / Ustensiles : saladier, poele, concaseur
+Nom : salade steak hache paprika / Durée : 14 / Ingredients : salade, steak hache, huile, epice paprika / Ustensiles : saladier, poele, concaseur
+Nom : salade saumon tandoori / Durée : 14 / Ingredients : salade, saumon, huile, epice tandoori / Ustensiles : saladier, poele, concaseur
+Nom : riz saumon paprika / Durée : 20 / Ingredients : riz, eau, saumon, huile, epice paprika / Ustensiles : casserole, poele, concaseur
+Nom : puree steak hache sauce forestier / Durée : 20 / Ingredients : pure, lait, eau, steak hache, huile, creme , champignon, beurre, eau / Ustensiles : casserole, poele, saladier, mixeur

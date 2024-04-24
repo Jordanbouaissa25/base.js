@@ -1,94 +1,179 @@
-
-
-var data = [{
+var data = [
+  {
     type: "accompagnement",
     nom: "riz",
-    ingredients: ["riz","eau"],
+    ingredients: ["riz", "eau"],
     duration: 10,
-    ustensile: ["casserole"]
-},{
-
+    ustensile: ["casserole"],
+  },
+  {
     type: "accompagnement",
     nom: "puree",
-    ingredients: ["pure","lait","eau"],
+    ingredients: ["pure", "lait", "eau"],
     duration: 10,
-    ustensile: ["casserole"]
-},{
+    ustensile: ["casserole"],
+  },
+  {
     type: "accompagnement",
     nom: "salade",
     ingredients: ["salade"],
     duration: 4,
-    ustensile: ["saladier"]
-},{
+    ustensile: ["saladier"],
+  },
+  {
     type: "accompagnement",
-    nom:"frite",
-    ingredients:["patate","huile"],
+    nom: "frite",
+    ingredients: ["patate", "huile"],
     duration: 13,
-    ustensile:["friteuse"]
-},{
-    type: "assaisonement",
+    ustensile: ["friteuse"],
+  },
+  {
+    type: "assaisonnement",
     nom: "curry",
     ingredients: ["epice curry"],
     duration: 3,
-    ustensile: []
-},{
-    type: "assaisonement",
+    ustensile: [],
+  },
+  {
+    type: "assaisonnement",
     nom: "tandoori",
     ingredients: ["epice tandoori"],
     duration: 3,
-    ustensile: ["concaseur"]
-},{
-    type: "assaisonement",
+    ustensile: ["concaseur"],
+  },
+  {
+    type: "assaisonnement",
     nom: "sauce forestier",
-    ingredients: ["creme","champignon","beurre","beurre","eau"],
+    ingredients: ["creme ", "champignon", "beurre", "eau"],
     duration: 3,
-    ustensile: ["saladier","mixeur"],
-},{
-    type:"assaisonement",
+    ustensile: ["saladier", "mixeur"],
+  },
+  {
+    type: "assaisonnement",
     nom: "paprika",
     ingredients: ["epice paprika"],
     duration: 3,
-    ustensile: ["concaseur"]
-},{
+    ustensile: ["concaseur"],
+  },
+  {
     type: "plat",
     nom: "boeuf",
-    ingredients: ["viande","huile"],
+    ingredients: ["viande", "huile"],
     duration: 7,
-    ustensile: ["poele"]
-},{
+    ustensile: ["poele"],
+  },
+  {
     type: "plat",
     nom: "poulet",
-    ingredients: ["poulet","huile"],
+    ingredients: ["poulet", "huile"],
     duration: 7,
-    ustensile: ["poele"]
-},{
+    ustensile: ["poele"],
+  },
+  {
+    type: "plat",
+    nom: "saumon",
+    ingredients: ["saumon", "huile"],
+    duration: 7,
+    ustensile: ["poele"],
+  },
+  {
     type: "plat",
     nom: "steak hache",
-    ingredients: ["steak hache","huile"],
+    ingredients: ["steak hache", "huile"],
     duration: 7,
-    ustensile: ["poele"]
+    ustensile: ["poele"],
+  },
+];
 
-}]
+var type_element = {
+  accompagnement: [],
+  plat: [],
+  assaisonnement: [],
+};
 
-var plat = []
-var assaisonement = []
-var accompagnement = []
+/* Les recettes de cuisine :
+Créer un tableau d’object de recette de 10 recette differente et aléatoire avec les propriétés « nom » « ingrédients[] » « duration » « ustensile »
 
-for (var i = 0; i < data.length - 1; i++) {
-    var plat =  plat[Math.round(Math.random() * ((plat.length - 1) - 0 ) + 0)]
-    var assaisonement = assaisonement[Math.round(Math.random() * ((assaisonement.length - 1) - 0 ) + 0)]
-    var accompagnement = accompagnement[Math.round(Math.random() * ((accompagnement.length - 1) - 0 ) + 0)]
-
-   
+Exemple : 
+{
+    nom: « Riz Boeuf Curry »
+    ingredients: [viande, huile, riz, eau, curry ]
+    duration: 20
+    ustensile : [poele, carresole]
 }
 
+*/
+for (var i = 0; i < data.length; i++) {
+  if (data[i].type === "accompagnement")
+    type_element.accompagnement.push(data[i]);
+  else if (data[i].type === "plat") type_element.plat.push(data[i]);
+  else type_element.assaisonnement.push(data[i]);
+}
 
+var recettes = [];
 
+function numberRamdom(max, min) {
+  return Math.round(Math.random() * (max - min) + min);
+}
 
+function numberRamdom(max, min) {
+  var value = 0;
 
-/* 
-Exemple résultat :  nom: "Riz Boeuf Curry",                          
-ingredients: ["Viande","huile","riz","eau","curry"],
-duration: 20,
-ustensile: ["poele","casserole"],
- */
+  value = Math.round(Math.random() * (max - min) + min);
+
+  return value;
+}
+
+function testing(...t) {
+  console.log(t);
+}
+
+var text = "";
+
+for (var i = 0; i < 10; i++) {
+  var accompagnement =
+    type_element.accompagnement[
+      numberRamdom(type_element.accompagnement.length - 1, 0)
+    ];
+  var plat = type_element.plat[numberRamdom(type_element.plat.length - 1, 0)];
+  var assaisonnement =
+    type_element.assaisonnement[
+      numberRamdom(type_element.assaisonnement.length - 1, 0)
+    ];
+  var recette = `${accompagnement.nom} ${plat.nom} ${assaisonnement.nom}`;
+  var object_recette = {
+    nom: recette,
+    ingredients: [
+      ...accompagnement.ingredients,
+      ...plat.ingredients,
+      ...assaisonnement.ingredients,
+    ],
+    duration: accompagnement.duration + plat.duration + assaisonnement.duration,
+    ustensile: [
+      ...accompagnement.ustensile,
+      ...plat.ustensile,
+      ...assaisonnement.ustensile,
+    ],
+  };
+  recettes.push(object_recette);
+  /*     console.log("\nNom : ", object_recette.nom)
+    console.log("Durée : ", object_recette.duration)
+    console.log("Ingredients : ", object_recette.ingredients.join(', '))
+    console.log("Ustensiles : ", object_recette.ustensile.join(', '))  */
+  text += `Nom : ${object_recette.nom} / Durée : ${
+    object_recette.duration
+  } / Ingredients : ${object_recette.ingredients.join(
+    ", "
+  )} / Ustensiles : ${object_recette.ustensile.join(", ")}\n`;
+}
+
+const fs = require("fs");
+
+var folder_exist = fs.existsSync("recettes");
+//console.log(folder_exist, !folder_exist, !false)
+if (!folder_exist) fs.mkdirSync("recettes");
+fs.appendFileSync("recettes/recette-24042024.txt", text);
+
+//console.log(text)
+
+//console.log(type_element)
