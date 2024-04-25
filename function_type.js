@@ -1,3 +1,5 @@
+const _ = require("lodash");
+
 var tab_element = [
   "A",
   "2",
@@ -88,3 +90,9 @@ pile_card = pile_card.map(function (cart) {
 });
 
 console.log(pile_card);
+
+pile_card = _.shuffle(pile_card);
+console.log(pile_card);
+
+var indexFind = _.findIndex(pile_card, ["name", "4-C"]);
+console.log(indexFind, pile_card[indexFind]);
