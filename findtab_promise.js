@@ -1,3 +1,4 @@
+const { reject, last, result } = require("lodash");
 var prompt = require("prompt");
 
 var people = [
@@ -57,6 +58,51 @@ var people = [
     ],
   },
 ];
+
+function searchLoopName(lastName, tab, path) {
+  let arbre = null;
+  for (let i = 0; i < tab.length; i++) {
+    let element = tab[i];
+    if (element.lastName == lastName) {
+      arbre.push(
+        `{name:${element.firstName} ${element.lastName}, parents: path}`
+      );
+    }
+    if (element.children) {
+      let value = searchLoopName(
+        `lastName, element.children,  ${path} ${element.firstName} ${element.lastName} /`
+      );
+      arbre = [...arbre, ...value];
+    }
+  }
+  return arbre;
+}
+
+function FindName(lastName) {
+  return new Promise((resolve, reject) => {
+    let result = searchLoopName(lastName, people, "");
+    console.log(result);
+    if (result) {
+      resolve(result);
+    } else {
+      reject("Not Found");
+    }
+  });
+}
+
+prompt.get("lastName", (err, result) => {
+  FindName(result.lastName)
+    .then((resultat) => {
+      resultat.forEach((element) => {
+        console.log`(${element.name} ${element.parents != ""} ? parents : ${
+          element.parents
+        }:""})`;
+      });
+    })
+    .catch((err) => {
+      console.log("Personne");
+    });
+});
 
 // Créer un tableau avec tout les mêmes nom de famille , si on tappe Luc on trouvera tout les luc ainsi que tout les édouards
 // Ajouter dans un tableau et retourné.
