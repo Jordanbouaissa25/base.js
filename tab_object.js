@@ -75,8 +75,29 @@ for (let i = 0; i < peoples.length; i) {
   }
   tableaufinal.push(tableauint); // ajout tableau de 5 dans le tableau final
 }
-
+allocateParents(tableaufinal);
 console.log(tableaufinal); // Affichage du tableau final
+
+// Fonction pour  allouer des paretns à chaque pile
+
+function allocateParents(piles) {
+  // Parcours des piles
+  for (let i = 1; i < piles.length; i++) {
+    let currentPile = piles[i];
+    let previousPile = piles[i - 1];
+
+    // Parcours des personnes dans la pile actuelle
+    for (let j = 0; j < currentPile.length; j++) {
+      let person = currentPile[j];
+
+      // Sélection aléatoire d'un parent dans la pile précédente
+      let randomIndex = Math.floor(Math.random() * (previousPile.length - 1));
+      let parent = previousPile[randomIndex];
+      //Attribution du parent à la personne actuelle
+      person.parent = parent.id;
+    }
+  }
+}
 
 //console.log(gender);
 
