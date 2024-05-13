@@ -1,0 +1,30 @@
+const _ = require("lodash");
+const { faker } = require("@faker-js/faker/locale/fr");
+
+var peoples = [
+  //   {
+  //     firstName: [],
+  //     lastName: [],
+  //     gender: [],
+  //     age: [],
+  //   },
+];
+
+let age_min = 18;
+let age_max = 65;
+let nombre_elements = 25;
+
+for (var i = 0; i < nombre_elements; i++) {
+  let sex_peoples = faker.person.sexType();
+  let firstName = faker.person.firstName(sex_peoples);
+  let lastName = faker.person.lastName(sex_peoples);
+  let age = _.random(age_min, age_max);
+  peoples.push({
+    firstName: firstName,
+    lastName: lastName,
+    age: age,
+    gender: sex_peoples,
+  });
+}
+
+console.log(peoples);

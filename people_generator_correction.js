@@ -17,9 +17,16 @@ for (var i = 0; i < nombre_elements; i++) {
   var obj = {
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
-    gender: "male",
     age: _.random(age_min, age_max),
+    gender: faker.person.sexType,
   };
+
+  var sex_index = _.random(0, 1);
+  if (sexType === 1) {
+    console.log("male");
+  } else {
+    console.log("female");
+  }
   tab.push(obj);
 }
-console.log(tab);
+// console.log(tab);
