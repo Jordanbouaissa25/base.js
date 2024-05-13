@@ -76,9 +76,10 @@ for (let i = 0; i < peoples.length; i) {
   tableaufinal.push(tableauint); // ajout tableau de 5 dans le tableau final
 }
 allocateParents(tableaufinal);
+_.flatten(tableaufinal);
 console.log(tableaufinal); // Affichage du tableau final
 
-// Fonction pour  allouer des paretns à chaque pile
+// Fonction pour  allouer des parents à chaque pile
 
 function allocateParents(piles) {
   // Parcours des piles
@@ -98,6 +99,89 @@ function allocateParents(piles) {
     }
   }
 }
+
+let children = [];
+
+// Fonction récursive pour ajouter le nombre d'enfants à chaque élément
+function ajouterNbEnfants(personne) {
+  personne.nb_children = personne.enfants.length;
+  personne.enfants.forEach((enfant) => ajouterNbEnfants(enfant));
+}
+
+// Fonction récursive pour créer la propriété 'children' contenant tous les enfants
+function creerProprieteChildren(personne) {
+  personne.children = personne.enfants;
+  personne.enfants.forEach((enfant) => creerProprieteChildren(enfant));
+}
+
+// Fonction pour afficher les personnes avec des niveaux différents
+function afficherPersonnes(personne, niveau = 0) {
+  console.log(" ".repeat(niveau * 2) + personne.nom);
+  personne.enfants.forEach((enfant) => afficherPersonnes(enfant, niveau + 1));
+}
+
+function recursiveLoopSub(tab, indent, origin) {
+  let tabulation = "";
+
+  for (y = 0; y < indent; y++) {
+    // Tant que i inférieur à indent
+    tabulation += " "; //ajout s'espaces dans tabulation
+  }
+  for (let i = 0; i < tab.length; i++) {
+    // Tant que i inférieur à tab
+    // Affichage console de la tabulation, du nom à la position i de tab, du prénom à la position i et de l'origine
+    console.log(
+      `${tabulation}nom : ${tab[i].lastName} / prénom : ${tab[i].firstName}
+      } / origin : ${origin}`
+    );
+    if (tab[i].children && tab[i].children.length > 0) {
+      // Si dans tab à la position i il y a le param enfants et présence d'enfants
+      recursiveLoopSub(
+        tab[i].children,
+        indent + 1,
+        origin + `${tab[i].lastName} - `
+      ); // appelle de la fontion recursiveLoopSub en donnant tableau enfant + incrémentation indent + nom et prénom du parent
+    }
+  }
+}
+
+recursiveLoopSub(people, 0, "- ");
+
+// // Ajout du nombre d'enfants à chaque personne
+// personnes.forEach((personne) => ajouterNbEnfants(personne));
+
+// // Création de la propriété 'children' pour chaque personne
+// personnes.forEach((personne) => creerProprieteChildren(personne));
+
+// // Affichage des personnes avec des niveaux différents
+// personnes.forEach((personne) => afficherPersonnes(personne));
+
+// function recursiveLoopSub(tableau, indent, origin) {
+//   let tabulation = "";
+
+//   for (y = 0; y < indent; y++) {
+//     // Tant que i inférieur à indent
+//     tabulation += " "; //ajout s'espaces dans tabulation
+//   }
+//   for (let i = 0; i < tableau.length; i++) {
+//     // Tant que i inférieur à tab
+//     // Affichage console de la tabulation, du nom à la position i de tab, du prénom à la position i et de l'origine
+//     console.log(
+//       `${tabulation}lastName : ${tableau[i].lastName} / firstName : ${tableau[i].firstName}
+//       } / origin : ${origin}`
+//     );
+//     if (tableau[i].children && tableau[i].children.length > 0) {
+//       // Si dans tab à la position i il y a le param enfants et présence d'enfants
+//       recursiveLoopSub(
+//         tableau[i].children,
+//         indent + 1,
+//         origin + `${tableau[i].lastName} - `
+//       ); // appelle de la fontion recursiveLoopSub en donnant tableau enfant + incrémentation indent + nom et prénom du parent
+//     }
+//   }
+// }
+
+// recursiveLoopSub(peoples, 0, "");
 
 //console.log(gender);
 
