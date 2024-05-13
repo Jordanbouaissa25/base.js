@@ -17,7 +17,7 @@ let nombre_elements = 25;
 for (var i = 0; i < nombre_elements; i++) {
   let sex_peoples = faker.person.sexType();
   let firstName = faker.person.firstName(sex_peoples);
-  let lastName = faker.person.lastName(sex_peoples);
+  let lastName = faker.person.lastName();
   let age = _.random(age_min, age_max);
   peoples.push({
     firstName: firstName,
@@ -44,7 +44,7 @@ function printPeople(tab) {
   for (let i = 0; i < tab.length; i++) {
     var obj_people = tab[i];
     var gender_fr = "Homme";
-    if (tab[i].gender === "Female") {
+    if (tab[i].gender === "female") {
       gender_fr = "Femme";
     }
     var text = `${obj_people.firstName} ${obj_people.lastName} - ${gender_fr} - ${obj_people.age}ans`;
@@ -52,3 +52,58 @@ function printPeople(tab) {
   }
 }
 printPeople(peoples);
+
+let Homme_plus_de_45ans = [];
+let Homme_moins_de_45ans = [];
+let Femme_plus_de_45ans = [];
+let Femme_moins_de_45ans = [];
+
+for (let i = 0; i < peoples.length; i++) {
+  let e = peoples[i];
+  if (peoples[i].gender === "male" && peoples[i].age > 45) {
+    Homme_plus_de_45ans.push(e);
+  } else if (peoples[i].gender === "male" && peoples[i].age <= 45) {
+    Homme_moins_de_45ans.push(e);
+  } else if (peoples[i].gender === "female" && peoples[i].age > 45) {
+    Femme_plus_de_45ans.push(e);
+  } else if (peoples[i].gender === "female" && peoples[i].age <= 45) {
+    Femme_moins_de_45ans.push(e);
+  }
+}
+
+console.log("Homme_plus_de_45ans:");
+printPeople(Homme_plus_de_45ans);
+console.log("Homme_moins_de_45ans:");
+printPeople(Homme_moins_de_45ans);
+console.log("Femme_plus_de_45ans:");
+printPeople(Femme_plus_de_45ans);
+console.log("Femme_moins_de_45ans:");
+printPeople(Femme_moins_de_45ans);
+// let plus_de_45ans = [];
+// let moins_de_45ans = [];
+
+// // Creer la variable à 0 i --> Tant que i n'est pas plus grand que la taille du tableau  --> tu ajoute 1 à i soit : i++
+// for (let i = 0; i < people.length; i++) {
+//   let e = people[i];
+//   if (e.age > 45) {
+//     plus_de_45ans.push(e);
+//   } else {
+//     moins_de_45ans.push(e);
+//   }
+// }
+
+// console.log("plus_de_45ans :");
+// printPeople(plus_de_45ans);
+// console.log("moins_de_45ans:");
+// printPeople(moins_de_45ans);
+
+// var homme = [];
+// var femme = [];
+
+// for (var i = 0; i < people.length; i++) {
+//   if (people[i].gender === "male") {
+//     homme.push(people[i]);
+//   } else {
+//     femme.push(people[i]);
+//   }
+// }
