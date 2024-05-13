@@ -28,3 +28,27 @@ for (var i = 0; i < nombre_elements; i++) {
 }
 
 console.log(peoples);
+
+/* for (let i = 0; i < people.length; i++) { // Ajouter une nouvelle propriété et la supprimer
+  people[i].gender_fr = "Homme"
+  if (people[i].gender === "Female") {
+    people[i].gender_fr = "Femme"
+  }
+}
+var text = `${people[i].firstName} ${people[i].lastName} - ${people[i].gender_fr} - ${people[i].age}ans`
+console.log(text)
+delete people[i].gender_fr 
+
+console.log(people) */
+function printPeople(tab) {
+  for (let i = 0; i < tab.length; i++) {
+    var obj_people = tab[i];
+    var gender_fr = "Homme";
+    if (tab[i].gender === "Female") {
+      gender_fr = "Femme";
+    }
+    var text = `${obj_people.firstName} ${obj_people.lastName} - ${gender_fr} - ${obj_people.age}ans`;
+    console.log(text);
+  }
+}
+printPeople(peoples);
