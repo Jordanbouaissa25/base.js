@@ -37,7 +37,7 @@ articles = articles.map(function (e) {
     price_unit_ht: price_ht,
     price_total_ttc: arrondir(e.price_unit_ttc * e.quantity),
     price_total_ht: arrondir(price_ht * e.quantity),
-    id: _.uniqueId(),
+    // id: _.uniqueId(),
   };
 });
 
@@ -55,16 +55,75 @@ for (var i = 0; i < articles.length; i++) {
   }
 }
 
-console.log(for_tva_more_interval);
+// console.log(for_tva_more_interval);
 
 let plus10000 = [];
 
 plus10000 = articles.filter((articles) => articles.price_total_ttc > 10000);
 
-console.log(plus10000);
+// console.log(plus10000);
 
 let quantityplusde50 = [];
 
 quantityplusde50 = articles.filter((articles) => articles.quantity > 50);
 
-console.log(quantityplusde50);
+// console.log(quantityplusde50);
+
+articles = articles.map(function (e) {
+  return { ...e, id: _.uniqueId() };
+});
+
+// console.log(articles);
+
+var number_users = 25;
+var users = [];
+
+for (var i = 0; i < number_users; i++) {
+  let firstName = faker.person.firstName();
+  let lastName = faker.person.lastName();
+  users.push({
+    username: faker.internet.userName({
+      firstName: firstName,
+      lastName: lastName,
+    }),
+    firstName: firstName,
+    lastName: lastName,
+    email: faker.internet.email({
+      firstName: firstName,
+      lastName: lastName,
+    }),
+  });
+}
+
+// console.log(users);
+
+let number_article_min = 0;
+let number_article_max = 10;
+let updatedArticles = [];
+// let article = [];
+
+// Générer des utilisateurs avec des articles aléatoires
+let usersWithArticles = users.map((user) => {
+  let numArticles = (number_article_min, number_article_max);
+  let userArticles = new Set(); // Utiliser un ensemble pour stocker les articles uniques
+
+  // Générer des identifiants d'articles uniques
+  while (userArticles.size < numArticles) {
+    let randomArticleId = _.sample(
+      updatedArticles.map((article) => article.id)
+    ); // Sélectionner un identifiant d'article aléatoire
+    userArticles.add(randomArticleId);
+  }
+
+  return {
+    ...user,
+    articles: Array.from(userArticles),
+  };
+});
+
+// Afficher les utilisateurs avec leurs articles
+usersWithArticles.forEach((user) => {
+  console.log(
+    `Utilisateur: ${user.username}, Articles: ${user.articles.join(", ")}`
+  );
+});
