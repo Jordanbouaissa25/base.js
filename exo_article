@@ -1,213 +1,72 @@
 const { faker } = require("@faker-js/faker/locale/fr");
 
-var products = [];
+// var products = [];
 
-// let price_min = 5.0;
-// let price_max = 6.0;
-// let number_min = 0;
-// let number_max = 10;
-let nombre_article = 10;
+let price_min = 5.0;
+let price_max = 6.0;
+let nombre_article = 1000;
+let number_min = 0;
+let number_max = 10;
 
-for (var i = 0; i < nombre_article; i++) {
-  let nom = faker.commerce.productName();
-  let description = faker.commerce.productDescription();
-  let department = faker.commerce.department();
-  let price = faker.number.int({ min: 5.0, max: 6.0, precision: 0.01 });
-  let stock = faker.number.int({ min: 0, max: 10 });
-  stock = stock.toFixed();
-  products.push({
-    nom: nom,
-    description: description,
-    department: department,
-    price: price,
-    stock: stock,
-  });
+// Fonction pour générer un nombre aléatoire entre min et max, avec une précision de deux décimales
+function randomPrice(min, max) {
+  return (Math.random() * (max - min) + min).toFixed(2);
 }
 
-// Filtrer les produits en stock et dont le prix est inférieur à 5.5€
-let cheapProductsInStock = products.filter(
-  (product) => product.stock > 0 && product.price < 5.5
-);
-
-// Filtrer les produits en stock et dont le prix est supérieur à 5.5€
-let expensiveProductsInStock = products.filter(
-  (product) => product.stock > 0 && product.price > 5.5
-);
-
-// Filtrer les produits qui ne sont plus en stock
-const outOfStockProducts = products.filter((product) => products.stock === 0);
-
-// Filtrer les produits avec un stock faible (moins de 3 pièces)
-let lowStockProducts = products.filter((product) => product.stock < 3);
-
-// Fonction pour afficher les produits
-function displayProducts(products, title) {
-  console.log(`${title} (${products.length} produits) :`);
-  products.forEach((products) => {
-    console.log(
-      `${products.nom} - ${products.price}€ - ${products.stock} en stock`
-    );
-  });
-  console.log(); // Ajout d'une ligne vide pour la lisibilité
+// Générer les articles
+let articles = [];
+for (let i = 0; i < nombre_article; i++) {
+  let article = {
+    nom: faker.commerce.productName(),
+    description: faker.lorem.sentence(),
+    department: faker.commerce.department(),
+    prix: parseFloat(randomPrice(price_min, price_max)),
+    stock:
+      Math.floor(Math.random() * (number_max - number_min + 1)) + number_min,
+  };
+  articles.push(article);
 }
+
+// Filtrer les produits en stock et dont le prix est inférieur à 5.5 euros
+let enStockMoins55 = articles.filter(
+  (article) => article.stock > 0 && article.prix < 5.5
+);
+
+// Filtrer les produits en stock et dont le prix est supérieur à 5.5 euros
+let enStockPlus55 = articles.filter(
+  (article) => article.stock > 0 && article.prix > 5.5
+);
+
+// Filtrer les produits plus en stock
+let plusEnStock = articles.filter((article) => article.stock === 0);
+
+// Filtrer les produits avec un stock faible (moins de 3 pièces en stock)
+let stockFaible = articles.filter((article) => article.stock < 3);
 
 // Afficher les produits filtrés
-displayProducts(cheapProductsInStock, "En stock et moins de 5.5€");
-displayProducts(expensiveProductsInStock, "En stock et plus de 5.5€");
-displayProducts(outOfStockProducts, "Produits qui ne sont plus en stock");
-displayProducts(lowStockProducts, "Produits avec un stock faible");
-
-// Obtenir toutes les catégories uniques et compter le nombre d'éléments par catégorie
-const categories = {};
-products.forEach((products) => {
-  if (!categories[products.department]) {
-    categories[products.department] = 1;
-  } else {
-    categories[products.department]++;
-  }
-});
-
-// Afficher les catégories et le nombre d'éléments par catégorie
-console.log("Catégories et nombre d'éléments :");
-for (const category in categories) {
-  console.log(`${category}: ${categories[category]} éléments`);
+function afficherProduits(filtre, titre) {
+  console.log(`${titre} (${filtre.length}):`);
+  filtre.forEach((article) => {
+    console.log(
+      `${article.nom} - ${article.description} - ${article.prix}€ - ${article.stock}`
+    );
+  });
+  console.log("\n");
 }
 
-// // Afficher les produits filtrés
-// console.log(
-//   "En stock et moins de 5.5€ (" + cheapProductsInStock.length + " produits) :"
-// );
-// cheapProductsInStock.forEach((products) => {
-//   console.log(
-//     `${products.nom} - ${products.price}€ - ${products.stock} en stock`
-//   );
-// });
+afficherProduits(enStockMoins55, "En stock de moins de 5.5 euros");
+afficherProduits(enStockPlus55, "En stock de plus de 5.5 euros");
+afficherProduits(plusEnStock, "Plus en stock");
+afficherProduits(stockFaible, "Stock faible");
 
-// console.log(
-//   "\nEn stock et plus de 5.5€ (" +
-//     expensiveProductsInStock.length +
-//     " produits) :"
-// );
-// expensiveProductsInStock.forEach((products) => {
-//   console.log(
-//     `${products.nom} - ${products.price}€ - ${products.stock} en stock`
-//   );
-// });
+// Compter les éléments par catégorie
+let countByCategory = articles.reduce((acc, article) => {
+  acc[article.department] = (acc[article.department] || 0) + 1;
+  return acc;
+}, {});
 
-// console.log(
-//   "\nProduits qui ne sont plus en stock (" +
-//     outOfStockProducts.length +
-//     " produits) :"
-// );
-// outOfStockProducts.forEach((products) => {
-//   console.log(
-//     `${products.nom} - ${products.price}€ - ${products.stock} en stock`
-//   );
-// });
-
-// console.log(
-//   "\nProduits avec un stock faible (" + lowStockProducts.length + " produits) :"
-// );
-// lowStockProducts.forEach((products) => {
-//   console.log(
-//     `${products.nom} - ${products.price}€ - ${products.stock} en stock`
-//   );
-// });
-
-// console.log(
-//   cheapProductsInStock,
-//   outOfStockProducts,
-//   lowStockProducts,
-//   expensiveProductsInStock
-// );
-// console.log(products);
-// // Fonction pour générer un produit aléatoire
-// function generateProduct() {
-//   let name = faker.commerce.productName();
-//   let description = faker.commerce.productDescription();
-//   let department = faker.commerce.department();
-//   let price = faker.datatype.number({ min: 5.0, max: 6.0, precision: 0.01 });
-//   let stock = faker.datatype.number({ min: 0, max: 10 });
-//   return {
-//     name,
-//     description,
-//     department,
-//     price,
-//     stock,
-//   };
-// }
-
-// // Générer 1000 produits
-// let products = Array.from({ length: 1000 }, () => generateProduct());
-
-// // Filtrer les produits en stock et dont le prix est inférieur à 5.5€
-// let cheapProductsInStock = products.filter(
-//   (product) => product.stock > 0 && product.price < 5.5
-// );
-
-// // Filtrer les produits en stock et dont le prix est supérieur à 5.5€
-// let expensiveProductsInStock = products.filter(
-//   (product) => product.stock > 0 && product.price > 5.5
-// );
-
-// // Filtrer les produits qui ne sont plus en stock
-// const outOfStockProducts = products.filter((product) => product.stock === 0);
-
-// // Filtrer les produits avec un stock faible (moins de 3 pièces)
-// let lowStockProducts = products.filter((product) => product.stock < 3);
-
-// // Afficher les produits filtrés
-// console.log(
-//   "En stock et moins de 5.5€ (" + cheapProductsInStock.length + " produits) :"
-// );
-// cheapProductsInStock.forEach((product) => {
-//   console.log(
-//     `${product.name} - ${product.price}€ - ${product.stock} en stock`
-//   );
-// });
-
-// console.log(
-//   "\nEn stock et plus de 5.5€ (" +
-//     expensiveProductsInStock.length +
-//     " produits) :"
-// );
-// expensiveProductsInStock.forEach((product) => {
-//   console.log(
-//     `${product.name} - ${product.price}€ - ${product.stock} en stock`
-//   );
-// });
-
-// console.log(
-//   "\nProduits qui ne sont plus en stock (" +
-//     outOfStockProducts.length +
-//     " produits) :"
-// );
-// outOfStockProducts.forEach((product) => {
-//   console.log(
-//     `${product.name} - ${product.price}€ - ${product.stock} en stock`
-//   );
-// });
-
-// console.log(
-//   "\nProduits avec un stock faible (" + lowStockProducts.length + " produits) :"
-// );
-// lowStockProducts.forEach((product) => {
-//   console.log(
-//     `${product.name} - ${product.price}€ - ${product.stock} en stock`
-//   );
-// });
-
-// // Obtenir toutes les catégories uniques et compter le nombre d'éléments par catégorie
-// const categories = {};
-// products.forEach((product) => {
-//   if (!categories[product.department]) {
-//     categories[product.department] = 1;
-//   } else {
-//     categories[product.department]++;
-//   }
-// });
-
-// console.log("\nCatégories et nombre d'éléments :");
-// for (const category in categories) {
-//   console.log(`${category}: ${categories[category]} éléments`);
-// }
+// Afficher le nombre d'éléments par catégorie
+console.log("Nombre d'éléments par catégorie :");
+for (category in countByCategory) {
+  console.log(`${category}: ${countByCategory[category]}`);
+}
