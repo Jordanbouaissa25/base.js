@@ -27,7 +27,7 @@ function arrondir(number) {
   return Math.round(number * 100) / 100;
 }
 
-//console.log(articles)
+console.log(articles);
 
 // Creer une nouvelle propriété "price_unit_ht", "price_total_ht" et "price_total_ttc"
 articles = articles.map(function (e) {
@@ -41,7 +41,7 @@ articles = articles.map(function (e) {
   };
 });
 
-//console.log(articles)
+console.log(articles);
 
 var more_tva_interval = articles.filter(function (e) {
   return e.tva > 7 && e.tva < 13;
@@ -55,25 +55,25 @@ for (var i = 0; i < articles.length; i++) {
   }
 }
 
-// console.log(for_tva_more_interval);
+console.log(for_tva_more_interval);
 
 let plus10000 = [];
 
 plus10000 = articles.filter((articles) => articles.price_total_ttc > 10000);
 
-// console.log(plus10000);
+console.log(plus10000);
 
 let quantityplusde50 = [];
 
 quantityplusde50 = articles.filter((articles) => articles.quantity > 50);
 
-// console.log(quantityplusde50);
+console.log(quantityplusde50);
 
 articles = articles.map(function (e) {
   return { ...e, id: _.uniqueId() };
 });
 
-// console.log(articles);
+console.log(articles);
 
 var number_users = 25;
 var users = [];
@@ -95,35 +95,23 @@ for (var i = 0; i < number_users; i++) {
   });
 }
 
-// console.log(users);
+console.log(users);
 
-let number_article_min = 0;
-let number_article_max = 10;
-let updatedArticles = [];
-// let article = [];
-
-// Générer des utilisateurs avec des articles aléatoires
-let usersWithArticles = users.map((user) => {
-  let numArticles = (number_article_min, number_article_max);
-  let userArticles = new Set(); // Utiliser un ensemble pour stocker les articles uniques
-
-  // Générer des identifiants d'articles uniques
-  while (userArticles.size < numArticles) {
-    let randomArticleId = _.sample(
-      updatedArticles.map((article) => article.id)
-    ); // Sélectionner un identifiant d'article aléatoire
-    userArticles.add(randomArticleId);
+let number_max_articles = 10;
+let tmp_articles = { ...articles };
+users = users.map(function (e) {
+  let limit = number_max_articles;
+  if (limit > tmp_articles.length) {
+    limit = tmp_articles.length;
   }
-
-  return {
-    ...user,
-    articles: Array.from(userArticles),
-  };
-});
-
-// Afficher les utilisateurs avec leurs articles
-usersWithArticles.forEach((user) => {
-  console.log(
-    `Utilisateur: ${user.username}, Articles: ${user.articles.join(", ")}`
-  );
+  let random_id_number = _.random(0, limit);
+  if (random_id_number > 0 && tmp_articles.length > 0) {
+    var id_to_users = [];
+    for (var i = 0; i < random_id_number; i++) {
+      var index_to_take = _.random(0, tmp_articles.length - 1);
+      id_to_users.push(tmp_articles[index_to_take].id);
+      tmp_articles.splice(index_to_take, 1);
+    }
+    return { ...e, articles: [] };
+  }
 });
