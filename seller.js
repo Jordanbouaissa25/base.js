@@ -112,6 +112,9 @@ users = users.map(function (e) {
       id_to_users.push(tmp_articles[index_to_take].id);
       tmp_articles.splice(index_to_take, 1);
     }
+  } else {
     return { ...e, articles: [] };
   }
 });
+
+console.log(articles);
