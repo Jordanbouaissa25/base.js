@@ -36,7 +36,7 @@ app.get("/users", function (req, res) {
 });
 
 var fieldAuthorized = ["firstName", "lastName", "email", "username"];
-var CreateField = ["firstName", "lastName", "username"];
+var fieldRequired = ["firstName", "lastName", "username"];
 
 function checkKeys(obj) {
   var tab = Object.keys(obj);
@@ -54,7 +54,6 @@ function checkKeys(obj) {
     }
     return true */
 }
-var fieldRequired = [];
 function checkObjRequiredKey(obj) {
   var tab = Object.keys(obj);
   var tab_res = [];
@@ -68,12 +67,30 @@ function checkObjRequiredKey(obj) {
   return tab_res;
 }
 
+app.get("/user/:id", (req, res) => {
+  const { id } = req.params.id;
+  var user = _.find(users, ["id", String(id)]);
+  if (user && id) {
+    res.send(user);
+  } else if (!id) {
+    res.statusCode = 405;
+    res.send({ msg: "Argument non valide." });
+  } else {
+    res.statusCode = 404;
+    res.send({ msg: "Utilisateur not found." });
+  }
+});
+
+app.put("/user/:id", (req, res) => {
+  var id = req.params.id;
+});
+
 app.post("/user", function (req, res) {
   var user = req.body;
   var fieldNotAuthorized = checkKeys(user);
   var fieldNoRequiredNotMissing = checkObjRequiredKey(user);
   if (fieldNotAuthorized.length == 0 && fieldNoRequiredNotMissing.length == 0) {
-    user._id = _.uniqueId();
+    user.id = _.uniqueId();
     users.push(user);
     res.send(user);
   } else {
@@ -102,3 +119,12 @@ app.post("/user", function (req, res) {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+// app.get("/user/:id/docs", (req, res) => {
+//   const { id } = req.params;
+//   res.send(id);
+// });
+
+// app.listen(port, () => {
+//   console.log(`Example app listening on port ${port}`);
+// });
