@@ -1,11 +1,13 @@
 const { faker } = require("@faker-js/faker");
-const { _ } = require("lodash");
+const { _, uniqueId, first } = require("lodash");
 
 const express = require("express");
 const app = express();
 const port = 3000;
 
 const bodyParser = require("body-parser");
+
+const { v4: uuidv4 } = require("uuid");
 
 let users = [];
 let number_user = 25;
@@ -23,20 +25,78 @@ for (var i = 0; i < number_user; i++) {
 
 console.log(users);
 
-app.use(bodyParser.json());
-
+// parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+// parse application/json
+app.use(bodyParser.json());
 
-app.get("/users", (req, res) => {
+app.get("/users", function (req, res) {
   res.send(users);
 });
 
-app.post("/users", function (req, res) {
-  res.send("welcome, " + req.body.username);
+var fieldAuthorized = ["firstName", "lastName", "email", "username"];
+var CreateField = ["firstName", "lastName", "username"];
+
+function checkKeys(obj) {
+  var tab = Object.keys(obj);
+  var tab_res = [];
+  for (var i = 0; i < tab.length; i++) {
+    if (fieldAuthorized.indexOf(tab[i]) == -1) tab_res.push(tab[i]);
+  }
+  return tab_res;
+  // return _.filter(tab, function(e)  { return fieldAuthorized.indexOf(e) == -1 })
+  /* for (var i = 0; i < tab.length; i++) {
+        if (String(tab[i]) !== "firstName" && String(tab[i]) !== "lastName" && String(tab[i]) !== "email" && String(tab[i]) !== "username") {
+            console.log(tab[i])
+            return false
+        }
+    }
+    return true */
+}
+var fieldRequired = [];
+function checkObjRequiredKey(obj) {
+  var tab = Object.keys(obj);
+  var tab_res = [];
+  for (var i = 0; i < fieldRequired.length; i++) {
+    if (tab.indexOf(fieldRequired[i]) == -1)
+      tab_res.push({ field: fieldRequired[i], type_error: "Not found" });
+    else if (!obj[fieldRequired[i]]) {
+      tab_res.push({ field: fieldRequired[i], type_error: "Found but empty" });
+    }
+  }
+  return tab_res;
+}
+
+app.post("/user", function (req, res) {
+  var user = req.body;
+  var fieldNotAuthorized = checkKeys(user);
+  var fieldNoRequiredNotMissing = checkObjRequiredKey(user);
+  if (fieldNotAuthorized.length == 0 && fieldNoRequiredNotMissing.length == 0) {
+    user._id = _.uniqueId();
+    users.push(user);
+    res.send(user);
+  } else {
+    res.statusCode = 405;
+    var text = "";
+    if (fieldNotAuthorized.length > 0) {
+      text += `Une des propriétés (${fieldNotAuthorized.join(
+        " "
+      )}) n'est pas autorisé. `;
+    }
+    if (fieldNoRequiredNotMissing.length > 0) {
+      text += `Une des propriétés (${fieldNoRequiredNotMissing
+        .map((e) => {
+          return e.field + " : " + e.type_error;
+        })
+        .join(", ")}) requis n'est pas completé. `;
+    }
+    res.send({
+      msg: text,
+      field_not_authorized: fieldNotAuthorized,
+      field_require_missing: fieldNoRequiredNotMissing,
+    });
+  }
 });
 
 app.listen(port, () => {
