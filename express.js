@@ -81,8 +81,45 @@ app.get("/user/:id", (req, res) => {
   }
 });
 
+function checkKeysRequiredIsNotEmpty(obj) {
+  var fieldEmpty = [];
+  var key_obj = Object.keys(obj);
+  for (var i = 0; i < fieldRequired.length; i++) {
+    if (key_obj.indexOf(fieldRequired[i]) && !obj[fieldRequired[i]]) {
+      fieldEmpty.push(fieldRequired[i]);
+    }
+  }
+  return fieldEmpty;
+}
+
 app.put("/user/:id", (req, res) => {
   var id = req.params.id;
+  var user_body = req.body;
+  var user_to_edit = {};
+  for (var i = 0; i < fieldAuthorized.length; i++) {
+    if (_.has(user_body, fieldAuthorized[i]))
+      user_to_edit[fieldAuthorized[i]] = user_body[fieldAuthorized[i]];
+  }
+  var field_require_empty = checkKeysRequiredIsNotEmpty(user_to_edit);
+  var user_to_edit_index = _.findIndex(users, ["id", String(id)]);
+  if (user_to_edit_index > -1 && field_require_empty.length == 0) {
+    users[user_to_edit_index] = {
+      ...users[user_to_edit_index],
+      ...user_to_edit,
+    };
+    res.send(users[user_to_edit_index]);
+  } else if (user_to_edit_index == -1) {
+    res.statusCode = 404;
+    res.send({ msg: "User not found." });
+  } else {
+    res.statusCode = 405;
+    res.send({
+      msg: `Les champs requis (${field_require_empty.join(
+        ", "
+      )}) sont vides, impossible d'éffectué la modification.`,
+      field_require_empty: field_require_empty,
+    });
+  }
 });
 
 app.post("/user", function (req, res) {
@@ -113,6 +150,54 @@ app.post("/user", function (req, res) {
       field_not_authorized: fieldNotAuthorized,
       field_require_missing: fieldNoRequiredNotMissing,
     });
+  }
+});
+
+function middlewareBodyIsArray(req, res, next) {
+  var users_to_add = req.body;
+  if (_.isArray(users_to_add)) {
+    next();
+  }
+}
+
+app.post("/users", function (req, res) {
+  var users_to_add = req.body;
+  var error_element = [];
+  for (var i = 0; i < users_to_add.length; i++) {
+    var user = users_to_add[i];
+    var fieldNotAuthorized = checkKeys(user);
+    var fieldNoRequiredNotMissing = checkObjRequiredKey(user);
+    var text = `L'element à la position ${i} :`;
+    if (fieldNotAuthorized.length > 0) {
+      text += `Une des propriétés (${fieldNotAuthorized.join(
+        ", "
+      )}) n'est pas autorisé. `;
+    }
+    if (fieldNoRequiredNotMissing.length > 0) {
+      text += `Une des propriétés (${fieldNoRequiredNotMissing
+        .map((e) => {
+          return e.field + " : " + e.type_error;
+        })
+        .join(", ")}) requis n'est pas completé .`;
+    }
+    if (fieldNotAuthorized.length > 0 || fieldNoRequiredNotMissing.length > 0)
+      error_element.push({
+        msg: text,
+        index: i,
+        field_not_authorized: fieldNotAuthorized,
+        field_require_missing: fieldNoRequiredNotMissing,
+      });
+  }
+  if (error_element.length > 0) {
+    res.statusCode = 405;
+    res.send(error_element);
+  } else {
+    users_to_add = _.map(users_to_add, (e) => {
+      e.id = _.uniqueId();
+      return e;
+    });
+    users = [...users, ...users_to_add];
+    res.send(users_to_add);
   }
 });
 
